@@ -3,6 +3,7 @@ using MissionApp.DataAccess.GenericRepository.Interface;
 using MissionApp.Entities.Data;
 using MissionApp.Entities.Models;
 using MissionApp.Entities.ViewModels;
+using System.Linq;
 using System.Security.Claims;
 
 namespace MissionApp.Areas.Customer.Controllers
@@ -57,13 +58,55 @@ namespace MissionApp.Areas.Customer.Controllers
             return View(userProfileVM);
         }
 
-// ----------------------------------------------------------------- User Profile Post Method -------------------------------------------------//
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult UserProfile(UserProfileVM userProfileVM, List<>)
-        //{
-        //    return View();
-        //}
+        // ----------------------------------------------------------------- User Profile Post Method -------------------------------------------------//
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UserProfile(UserProfileVM userProfileVM, List<int> UpdatedSkills)
+        {
+            User user = GetThisUser();
+            var IdOfUserSkills = _unitOfWork.UserSkill.GetAccToFilter(userSkill => userSkill.UserId == user.UserId).Select(u => u.SkillId);
+
+            if (user != null) 
+            {
+                user.FirstName = userProfileVM.FirstName;
+                user.LastName = userProfileVM.LastName;
+                user.LinkedInUrl = userProfileVM.LinkedInUrl;
+                user.CityId = userProfileVM.CityId;
+                user.CountryId = userProfileVM.CountryId;
+                user.ProfileText = userProfileVM.ProfileText;
+                user.EmployeeId = userProfileVM.EmployeeId;
+                user.Department = userProfileVM.Department;
+                user.Title = userProfileVM.Title;
+                user.WhyIVolunteer = userProfileVM.WhyIVolunteer;
+                user.UpdatedAt = DateTime.Now;
+
+                _unitOfWork.User.Update(user);
+
+                if (UpdatedSkills.Any())
+                {
+                    var AddSkills = UpdatedSkills.Except(IdOfUserSkills);
+                    foreach (var skillId in AddSkills)
+                    {
+                        UserSkill addUserSkills = new()
+                        {
+                            UserId = user.UserId,
+                            SkillId = skillId,
+                        };
+                        _unitOfWork.UserSkill.Add(addUserSkills);
+                    }
+
+                    var DeleteSkills = IdOfUserSkills.Except(UpdatedSkills);
+                    foreach (var skillid in DeleteSkills)
+                    {
+                        UserSkill deleteUserSkill = _unitOfWork.UserSkill.GetFirstOrDefault(userSkill => userSkill.SkillId == skillid);
+                        _unitOfWork.UserSkill.Remove(deleteUserSkill);
+                    }
+                }
+
+                _unitOfWork.Save();
+            }
+            return RedirectToAction(nameof(UserProfile));
+        }
 
 
 

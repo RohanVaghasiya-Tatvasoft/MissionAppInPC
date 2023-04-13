@@ -28,10 +28,10 @@ namespace MissionApp.Entities.ViewModels
         public string? Department { get; set; }
 
         [Required]
-        public long CityId { get; set; }
+        public int CityId { get; set; }
 
         [Required]
-        public long CountryId { get; set; }
+        public int CountryId { get; set; }
 
         [Required]
         public string? ProfileText { get; set; }
