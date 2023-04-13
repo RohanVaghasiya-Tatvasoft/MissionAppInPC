@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "38661671-23dc-45e0-9096-6774c8249b50": {
+      "ProjectGuid": "38661671-23dc-45e0-9096-6774c8249b50",
+      "DisplayName": "MissionApp",
+      "ColorIndex": 0
+    },
+    "faa78087-2151-4dbf-b96c-23470ab19436": {
+      "ProjectGuid": "faa78087-2151-4dbf-b96c-23470ab19436",
+      "DisplayName": "MissionApp.Entities",
+      "ColorIndex": 1
+    },
+    "c0707406-d8f1-4787-806f-3f3213a94537": {
+      "ProjectGuid": "c0707406-d8f1-4787-806f-3f3213a94537",
+      "DisplayName": "MissionApp.DataAccess",
+      "ColorIndex": 2
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 3
+}
