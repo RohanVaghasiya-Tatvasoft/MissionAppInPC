@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="~/css/storyAddingPage.css" />
     <link rel="stylesheet" href="~/css/volunteerStoryDetails.css" />
     <link rel="stylesheet" href="~/css/imageUploader.css" />
+    <link rel="stylesheet" href="~/css/userProfile.css" />
     @await RenderSectionAsync("CssValue", required: false)
 </head> 
 <body>
@@ -42,20 +43,10 @@
                         <ul class="navbar-nav nav-item">
                             <a asp-action="StoryListingPage" asp-controller="Story" asp-area="Customer" class="nav-link">Stories</a>
                         </ul>
-                        <ul class="navbar-nav nav-item dropdown">
-                            <a class="nav-link" href="#" id="navbarScrollingDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
+                        <ul class="navbar-nav nav-item dropdown" >
+                            <a class="nav-link" asp-controller="User" asp-action="PolicyPage">
                                 Privacy
-                                <img src="~/images/drop-down.png" style="margin-left:5px" />
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                                <li><a class="dropdown-item" href="#">First Link</a></li>
-                                <li><a class="dropdown-item" href="#">Second Link</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Third Link</a></li>
-                            </ul>
                         </ul>
                     </div>
                 </div>
@@ -73,8 +64,9 @@
                                 <img src="~/images/drop-down.png" style="margin-left:5px" />
                             </a>
                             <ul class="dropdown-menu" style="z-index:3" aria-labelledby="navbarScrollingDropdown">
-                                <li><a class="dropdown-item" asp-controller="" asp-action="">Volunteering Timesheet</a></li>
-                                <li><a class="dropdown-item" asp-controller="" asp-action="Logout">Signout</a></li>
+                                <li><a class="dropdown-item" asp-controller="User" asp-action="UserProfile">Edit Profile</a></li>
+                                <li><a class="dropdown-item" asp-controller="User" asp-action="Timesheet">Volunteering Timesheet</a></li>
+                                <li><a class="dropdown-item" asp-controller="Auth" asp-action="Logout">Signout</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -115,6 +107,7 @@
     <script src="/js/volunteeringMissionPage.js"></script>
     <script src="/js/storyListingPage.js"></script>
     <script src="/js/imageUploader.js"></script>
+    <script src="/js/userProfile.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>

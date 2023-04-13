@@ -33,6 +33,7 @@ namespace MissionApp.DataAccess.GenericRepository
             GoalMission = new GoalMissionRepository(_context);
             MissionDocument = new MissionDocumentsRepository(_context);
             Skill = new SkillRepository(_context);
+            UserSkill = new UserSkillRepository(_context);
         }
         public ICityRepository City { get; private set; }
 
@@ -67,6 +68,8 @@ namespace MissionApp.DataAccess.GenericRepository
         public IMissionDocumentsRepository MissionDocument { get; private set; }
 
         public ISkillRepository Skill { get; private set; }
+
+        public IUserSkillRepository UserSkill { get; private set; }
 
         public void Dispose()
         {

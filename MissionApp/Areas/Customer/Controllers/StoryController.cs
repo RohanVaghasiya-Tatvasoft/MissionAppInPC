@@ -10,7 +10,7 @@ using System.Security.Claims;
 namespace MissionApp.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    public class StoryController : Controller
+    public class StoryController : Controller  
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -43,7 +43,7 @@ namespace MissionApp.Areas.Customer.Controllers
             {
                 pg = 1;
             }
-            int recsCount = stories.Count();
+            int recsCount = stories.Count;
 
             var pager = new PaginationVM(recsCount, pg, pageSize);
 

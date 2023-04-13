@@ -26,6 +26,8 @@ namespace MissionApp.DataAccess.GenericRepository.Interface
         IGoalMissionRepository GoalMission { get; }
         IMissionDocumentsRepository MissionDocument { get; }
         ISkillRepository Skill { get; }
+        IUserSkillRepository UserSkill { get; }
+
         int Save();
     }
 }
