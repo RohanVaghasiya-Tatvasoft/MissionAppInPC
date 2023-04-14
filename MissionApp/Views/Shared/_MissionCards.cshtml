@@ -32,6 +32,9 @@
             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                 <li><a class="dropdown-item sort-div" onclick="loadMissions(1,'Newest')">Newest</a></li>
                 <li><a class="dropdown-item sort-div" onclick="loadMissions(1,'Oldest')">Oldest</a></li>
+                <li><a class="dropdown-item sort-div" onclick="loadMissions(1,'Lowest Awailable Seats')">Lowest Awailable Seats</a></li>
+                <li><a class="dropdown-item sort-div" onclick="loadMissions(1,'Highest Awailable Seats')">Highest Awailable Seats</a></li>
+                <li><a class="dropdown-item sort-div" onclick="loadMissions(1,'Sort By Deadline')">Sort By Deadline</a></li>
                 <li><a class="dropdown-item sort-div" onclick="loadMissions(1,'AZ')">A to Z</a></li>
                 <li><a class="dropdown-item sort-div" onclick="loadMissions(1,'ZA')">Z to A</a></li>
                 <li><a class="dropdown-item sort-div" onclick="loadMissions(1,'GOAL')">By Goal</a></li>
@@ -90,12 +93,15 @@
                             </div>
                         }
 
-                        <img class="card-img-top" id="mission-img" src="/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png" alt="Card image cap">
+                        <img class="card-img-top" id="mission-img" src="@mission.MissionImage" alt="Card image cap">
+
+
+
                         <div class="bg-dark bg-opacity-50 d-flex justify-items-center align-items-center py-2 pe-auto"
                              id="location" style="width: 7rem">
                             <img class="ms-auto pe-2" src="/images/pin.png" alt="" height="20">
                             <small class="text-light me-auto mb-0" id="locationName">@mission.City.Name</small>
-                        </div>
+                        </div>  
 
                         @if (Model.UserInfo != null)
                         {

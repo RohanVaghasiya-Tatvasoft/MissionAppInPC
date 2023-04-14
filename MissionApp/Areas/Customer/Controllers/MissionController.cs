@@ -153,6 +153,15 @@ namespace MissionApp.Areas.Customer.Controllers
                 case "Oldest":
                     return missions.OrderByDescending(m => m.StartDate).ToList();
 
+                case "Lowest Awailable Seats":
+                    return missions.OrderBy(u => u.Seats).ToList();
+
+                case "Highest Awailable Seats":
+                    return missions.OrderByDescending(u => u.Seats).ToList();
+                
+                case "Sort By Deadline":
+                    return missions.OrderByDescending(u => u.Deadline).ToList();
+
                 case "AZ":
                     return missions.OrderBy(m => m.Title).ToList();
 

@@ -365,6 +365,10 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(16)
                 .IsUnicode(false)
                 .HasColumnName("Mission_Availability");
+            entity.Property(e => e.MissionImage)
+                .HasMaxLength(2048)
+                .HasDefaultValueSql("(N'/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png')")
+                .IsFixedLength();
             entity.Property(e => e.MissionStatus).HasColumnName("Mission_Status");
             entity.Property(e => e.MissionThemeId).HasColumnName("Mission_Theme_Id");
             entity.Property(e => e.MissionType)

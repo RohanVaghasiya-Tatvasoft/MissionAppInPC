@@ -14,6 +14,7 @@ namespace MissionApp.Entities.ViewModels
         public User? UserOfStory { get; set; }
 
         public User? User { get; set; }
+        public Mission Mission { get; set; }
 
         public IEnumerable<User> UserList { get; set; }
 

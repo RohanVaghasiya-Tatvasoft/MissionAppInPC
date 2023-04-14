@@ -19,6 +19,8 @@ public partial class Mission
 
     public string? Description { get; set; }
 
+    public string MissionImage { get; set; } = null!;
+
     public DateTime? StartDate { get; set; }
 
     public DateTime? EndDate { get; set; }

@@ -20,12 +20,12 @@ namespace MissionApp.Entities.ViewModels
             
         }
 
-        public PaginationVM(int totalMissions, int page, int pageSize)
+        public PaginationVM(int totalMissions, int page, int pageSize )
         {
             int totalPages = (int)Math.Ceiling((decimal)totalMissions / (decimal)pageSize);
             int currentPage = page;
             int startPage = currentPage - 2;
-            int endPage = currentPage + 2;
+            int endPage = currentPage + 1;
 
             if(StartPage <= 0)
             {

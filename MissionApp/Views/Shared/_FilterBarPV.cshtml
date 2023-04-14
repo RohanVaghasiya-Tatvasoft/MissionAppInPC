@@ -1,4 +1,7 @@
 ﻿@model UserVM
+
+
+
 <header>
     <!-- header bar -->
     <div class="navbar-expand-md container-fluid border-top border-bottom bg-light px-0">
@@ -38,7 +41,7 @@
                                     @foreach(var country in Model.Countries)
                                     {
                                         <li class="dropdown-item">
-                                            <input type="checkbox" id="" value="@country.Name" class="checkbox" data-countryId=""> @country.Name
+                                            <input type="checkbox" id="" value="@country.Name" class="checkbox" data-countryId="@country.CountryId"> @country.Name
                                         </li>
                                     }
                                     
@@ -60,7 +63,7 @@
                                     @foreach(var city in Model.Cities)
                                     {
                                         <li class="dropdown-item">
-                                            <input type="checkbox" id="" value="@city.Name" class="checkbox" data-pId=""> @city.Name
+                                            <input type="checkbox" id="" value="@city.Name" class="checkbox" data-pId="@city.CountryId"> @city.Name
                                         </li>
                                     }
                                     

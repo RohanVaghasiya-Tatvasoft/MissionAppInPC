@@ -45,7 +45,7 @@ function loadMissions(pg, sortVal) {
         url: "/Customer/Mission/MissionCardView",
         method: "POST",
         dataType: "html",
-        data: { 'sortBy': sortBy, 'missionToSearch': missionToSearch, 'pg': pg, 'country': country, 'cities': cities, 'theme': theme },
+        data: { 'sortBy': sortBy, 'missionToSearch': missionToSearch, 'pg': pg, 'country': country, 'cities': cities, 'theme': theme, 'skills': skills },
         success: function (data) {
             $("#divLoader").addClass("d-none");
             $('#mission-list').html("");
