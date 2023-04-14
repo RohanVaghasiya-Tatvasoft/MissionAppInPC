@@ -26,11 +26,13 @@
                     <button type="button" id="indi" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" id="indi" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                     <button type="button" id="indi" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" id="indi" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
                 </div>
                 <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
                 </ol>
 
                 <div class="carousel-inner">
@@ -70,6 +72,18 @@
                             </p>
                         </div>
                     </div>
+                    <div class="carousel-item">
+                        <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
+                             alt="Fourth slide">
+                        <div class="carousel-caption d-block d-none d-sm-block">
+                            <h5>Fourth</h5>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis quae sunt ut voluptate
+                                ratione excepturi esse recusandae consequuntur corporis nisi blanditiis omnis qui
+                                asperiores expedita, laborum autem saepe. Enim, corrupti?
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -90,13 +104,13 @@
                     <button id="LoginBtn" class="btn btn-primary col-12 py-0" type="submit">Login</button>
 
                     <div class="lostNewAcc">
-                        <a asp-area="Customer" asp-controller="Auth" asp-action="ForgotPassword" style="font-size: 12px">Lost your password?</a>
-                        <p id="newPass">Don't have an account? <a asp-area="Customer" asp-controller="Auth" asp-action="Registration">Create an account</a></p>
-                    </div>
+                        <a class="text-secondary text-decoration-none" asp-area="Customer" asp-controller="Auth" asp-action="ForgotPassword" style="font-size: 18px">Lost your password?</a>
+                        <p id="newPass" style="font-size: 15px">Don't have an account? <a class="text-secondary text-decoration-none" style="font-size: 16px" asp-area="Customer" asp-controller="Auth" asp-action="Registration">Create an account</a></p>  
+                    </div> 
 
                 </form>
                 <div class="PP text-center mx-auto">
-                    <p> <a asp-action="Privacy">Privacy Policy</a></p>
+                    <p> <a class="text-decoration-none text-dark" style="font-size: 16px" asp-controller="User" asp-action="PolicyPage">Privacy Policy</a></p>
                 </div>
             </div>
 

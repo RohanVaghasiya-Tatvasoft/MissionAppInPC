@@ -5,9 +5,10 @@
 .carousel-inner img {
     width: 100%;
     height: 100vh;
+    filter: brightness(70%);
 }
 
-.container-fluid {
+.container-fluid { 
     padding: 0;
     margin: 0;
 }

@@ -108,13 +108,13 @@
                     <button id="RegisterBtn" class="btn btn-primary col-12 py-0" type="submit">Register</button>
 
                     <div class="lostNewAcc">
-                        <a asp-area="Customer" asp-controller="Auth" asp-action="ForgotPassword">Lost your password?</a>
-                        <p id="newPass">Don't have an account? <a asp-area="" asp-controller="Auth" asp-action="Login">Login Now</a></p>
+                        <a class="text-secondary text-decoration-none" style="font-size: 18px" asp-area="Customer" asp-controller="Auth" asp-action="ForgotPassword">Lost your password?</a>
+                        <p style="font-size: 15px" id="newPass">Already have an account? <a class="text-secondary text-decoration-none" style="font-size: 16px" asp-area="" asp-controller="Auth" asp-action="Login">Login Now</a></p>
                     </div>
                 </form>
 
                 <div class="PP text-center mx-auto">
-                    <p> <a asp-action="Privacy">Privacy Policy</a></p>
+                    <p> <a class="text-decoration-none text-dark" style="font-size: 16px" asp-controller="User" asp-action="PolicyPage">Privacy Policy</a></p>
                 </div>
 
             </div>
