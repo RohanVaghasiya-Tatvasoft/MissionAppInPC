@@ -1,8 +1,8 @@
-﻿
+﻿<!-- Footer -->
 <footer class="border-top footer1">
     <div class="container d-flex">
         <a class="text-start nav-link" asp-controller="User" asp-action="PolicyPage">Privacy Policy</a>
-        <a class="text-start nav-link ms-4" data-bs-toggle="modal" data-bs-target="#contactUs">
+        <a class="text-start nav-link ms-4" data-bs-toggle="modal" data-bs-target="#contactUs" onclick="contactUsGetData()">
             Contact Us
         </a>
         <div class="modal fade" id="contactUs" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -33,7 +33,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn border px-4" style="border-radius:50px" data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn border-warning text-warning px-4" style="border-radius:50px;">Submit</button>
+                            <button class="btn border-warning text-warning px-4" style="border-radius:50px;" onclick="ContactUsPostData()">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -41,3 +41,5 @@
         </div>
     </div>
 </footer>
+
+<script src="/js/contactUs.js"></script>

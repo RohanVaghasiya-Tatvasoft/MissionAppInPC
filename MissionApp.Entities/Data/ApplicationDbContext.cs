@@ -26,6 +26,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Comment> Comments { get; set; }
 
+    public virtual DbSet<ContactUs> ContactUs { get; set; }
+
     public virtual DbSet<Country> Countries { get; set; }
 
     public virtual DbSet<FavouriteMission> FavouriteMissions { get; set; }
@@ -221,6 +223,33 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Comment__User_Id__4316F928");
+        });
+
+        modelBuilder.Entity<ContactUs>(entity =>
+        {
+            entity.HasKey(e => e.ContactUsId).HasName("PK__ContactU__56224E8A2BA6431F");
+
+            entity.Property(e => e.ContactUsId).HasColumnName("ContactUs_Id");
+            entity.Property(e => e.CreatedAt)
+                .HasPrecision(0)
+                .HasDefaultValueSql("(getutcdate())")
+                .HasColumnName("Created_at");
+            entity.Property(e => e.DeletedAt)
+                .HasPrecision(0)
+                .HasColumnName("Deleted_at");
+            entity.Property(e => e.Message).IsUnicode(false);
+            entity.Property(e => e.Subject)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.UpdatedAt)
+                .HasPrecision(0)
+                .HasColumnName("Updated_at");
+            entity.Property(e => e.UserId).HasColumnName("User_Id");
+
+            entity.HasOne(d => d.User).WithMany(p => p.ContactUs)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ContactUs__User___2EDAF651");
         });
 
         modelBuilder.Entity<Country>(entity =>

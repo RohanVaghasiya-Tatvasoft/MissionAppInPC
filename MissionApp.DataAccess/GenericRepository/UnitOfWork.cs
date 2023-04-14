@@ -34,6 +34,8 @@ namespace MissionApp.DataAccess.GenericRepository
             MissionDocument = new MissionDocumentsRepository(_context);
             Skill = new SkillRepository(_context);
             UserSkill = new UserSkillRepository(_context);
+            Timesheet = new TimesheetRepository(_context);
+            ContactUs = new ContactUsRepository(_context);
         }
         public ICityRepository City { get; private set; }
 
@@ -70,7 +72,9 @@ namespace MissionApp.DataAccess.GenericRepository
         public ISkillRepository Skill { get; private set; }
 
         public IUserSkillRepository UserSkill { get; private set; }
+        public ITimesheetRepository Timesheet { get; private set; }
 
+        public IContactUsRepository ContactUs { get; private set; }
         public void Dispose()
         {
             _context.Dispose();

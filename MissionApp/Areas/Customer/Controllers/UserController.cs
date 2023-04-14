@@ -12,22 +12,72 @@ namespace MissionApp.Areas.Customer.Controllers
     public class UserController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public UserController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public UserController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         //---------------------------------------------------------------- Other Views ---------------------------------------------------------------//
+        #region Policy Page--->
         public IActionResult PolicyPage()
         {
             return View();
         }
+        #endregion
 
+        //---------------------------------------------------------------- TimeSheet ---------------------------------------------------------------//
+        #region TimeSheet--->
         public IActionResult Timesheet()
         {
-            return View();
+            User user = GetThisUser();
+            TimesheetVM timesheetVM = new();
+
+            timesheetVM.Missions = (List<Mission>)_unitOfWork.Mission.GetAll();
+            timesheetVM.Cities = (List<City>)_unitOfWork.City.GetAll();
+            timesheetVM.Timesheets = (List<Timesheet>)_unitOfWork.Timesheet.GetAll();
+
+            List<MissionApplication> draftMissAppListForTime = _unitOfWork.MissionApplication.GetAccToFilter(m => m.UserId == user.UserId && m.ApprovalStatus == "APPROVE" && m.Mission.MissionType == "TIME");
+            List<MissionApplication> draftMissAppListForGoal = _unitOfWork.MissionApplication.GetAccToFilter(m => m.UserId == user.UserId && m.ApprovalStatus == "APPROVE" && m.Mission.MissionType == "GOAL");
+            IEnumerable<Timesheet> timeBasedData = _unitOfWork.Timesheet.GetTimeSheetData(timeData => timeData.Mission.MissionType == "Time" && timeData.DeletedAt == null);
+            IEnumerable<Timesheet> goalBasedData = _unitOfWork.Timesheet.GetTimeSheetData(goalData => goalData.Mission.MissionType == "Goal" && goalData.DeletedAt == null);
+            try
+            {
+                timesheetVM.MissionApplicationForTime = draftMissAppListForTime;
+                timesheetVM.MissionApplicationForGoal = draftMissAppListForGoal;
+            }
+            catch { }
+
+            return View(timesheetVM);
+        }
+        #endregion
+
+        //---------------------------------------------------------------- Contact Us ---------------------------------------------------------------//
+        #region Contact Us --->
+        [HttpGet]
+        public UserVM ContactUs(UserVM userView)
+        {
+            userView.UserInfo = GetThisUser();
+            return userView;
         }
 
-//---------------------------------------------------------------------- User Profile Edit ----------------------------------------------------//
+        [HttpPost]
+        public void ContactUs(string subject, string message)
+        {
+            User user = GetThisUser();
+            ContactUs contactUs = new()
+            {
+                UserId = user.UserId,
+                Subject = subject,
+                Message = message
+            };
+
+            _unitOfWork.ContactUs.Add(contactUs);
+            _unitOfWork.Save();
+        }
+        #endregion
+
+        //------------------------------------------------------------- User Profile Edit -----------------------------------------------------------//
         public IActionResult UserProfile()
         {
             User user = GetThisUser();
@@ -61,7 +111,7 @@ namespace MissionApp.Areas.Customer.Controllers
         // ----------------------------------------------------------------- User Profile Post Method -------------------------------------------------//
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UserProfile(UserProfileVM userProfileVM, List<int> UpdatedSkills)
+        public IActionResult UserProfile(UserProfileVM userProfileVM, List<int> UpdatedSkills) 
         {
             User user = GetThisUser();
             var IdOfUserSkills = _unitOfWork.UserSkill.GetAccToFilter(userSkill => userSkill.UserId == user.UserId).Select(u => u.SkillId);
@@ -127,6 +177,81 @@ namespace MissionApp.Areas.Customer.Controllers
             var user = _unitOfWork.User.GetFirstOrDefault(m => m.Email == email);
             return user;
         }
+
+        [HttpPost]
+        public IActionResult ChangeAvatar(IFormFile avatar)
+        {
+            User user = GetThisUser();
+
+            if (user.Avatar == null)
+            {
+                string imgExt = Path.GetExtension(avatar.Name);
+                if (imgExt == ".jpg" || imgExt == ".png" || imgExt == ".jpeg")
+                {
+                    string ImageName = user.UserId + Path.GetExtension(avatar.Name);
+                    var imgSaveTo = Path.Combine(_webHostEnvironment.WebRootPath, "StoryImages", ImageName);
+                    /*var stream = new FileStream(imgSaveTo, FileMode.Create);
+                    avatar.CopyTo(stream);*/
+                    using (FileStream stream = new(imgSaveTo, FileMode.Create))
+                    {
+                        avatar.CopyTo(stream);
+                    }
+
+                    user.Avatar = ImageName;
+
+                    _unitOfWork.User.Add(user);
+                }
+            }
+            else
+            {
+                if (user.UserId + Path.GetExtension(avatar.Name) != user.Avatar)
+                {
+                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/StoryImages/", user.Avatar);
+
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+
+                    string ImageName = user.UserId + Path.GetExtension(avatar.Name);
+                    var imgSaveTo = Path.Combine(_webHostEnvironment.WebRootPath, "StoryImages", ImageName);
+                    /*var stream = new FileStream(imgSaveTo, FileMode.Create);
+                    avatar.CopyTo(stream);*/
+                    using (FileStream stream = new(imgSaveTo, FileMode.Create))
+                    {
+                        avatar.CopyTo(stream);
+                    }
+
+                    user.Avatar = ImageName;
+
+                    _unitOfWork.User.Update(user);
+                }
+
+            }
+            _unitOfWork.Save();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(string OldPassword, string NewPassword)
+        {
+            User user = GetThisUser();
+
+            if (user != null && OldPassword != null && NewPassword != null)
+            {
+                if (user.Password == OldPassword)
+                {
+                    user.Password = NewPassword;
+                    user.UpdatedAt = DateTime.Now;
+                    _unitOfWork.User.Update(user);
+                    _unitOfWork.Save();
+
+                    return Json(1);
+                }
+            }
+            return Json(0);
+        }
+
 
     }
 }

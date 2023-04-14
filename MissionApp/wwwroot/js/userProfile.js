@@ -129,12 +129,12 @@ function ChangePassword() {
 
     if (NewPassword == ConfirmPassword) {
         if (OldPassword == NewPassword) {
-            Alert('New Password must not be same as Previous One.');
+            Alert('New Password must not be the same as previous one.');
             location.reload();
         }
         else {
             $.ajax({
-                url: "/User/ChangePassword",
+                url: "/Customer/User/ChangePassword",
                 method: "POST",
                 data: { 'OldPassword': OldPassword, "NewPassword": NewPassword },
                 success: function (data) {
@@ -144,7 +144,7 @@ function ChangePassword() {
 
                     }
                     if (data == 1) {
-                        Alert('Password change successfully.');
+                        Alert('Password changed successfully.');
                         location.reload();
                     }
                 },

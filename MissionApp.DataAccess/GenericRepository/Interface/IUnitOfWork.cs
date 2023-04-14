@@ -27,7 +27,8 @@ namespace MissionApp.DataAccess.GenericRepository.Interface
         IMissionDocumentsRepository MissionDocument { get; }
         ISkillRepository Skill { get; }
         IUserSkillRepository UserSkill { get; }
-
+        ITimesheetRepository Timesheet { get; }
+        IContactUsRepository ContactUs { get; }
         int Save();
     }
 }

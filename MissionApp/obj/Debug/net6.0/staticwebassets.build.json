@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "bODxPgqe1+w4BpXGU1HmoZ8Mz3G+jH84N/pWe3xQVCc=",
+  "Hash": "mb3xNyZ3wrKnBpkhahlfkSPNxY48i0wDBUOKycfJR44=",
   "Source": "MissionApp",
   "BasePath": "_content/MissionApp",
   "Mode": "Default",
@@ -2259,6 +2259,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\Carousel.js"
+    },
+    {
+      "Identity": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\js\\contactUs.js",
+      "SourceId": "MissionApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\",
+      "BasePath": "_content/MissionApp",
+      "RelativePath": "js/contactUs.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\contactUs.js"
     },
     {
       "Identity": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\js\\imageUploader.js",
