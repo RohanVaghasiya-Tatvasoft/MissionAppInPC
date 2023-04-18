@@ -75,7 +75,7 @@ namespace MissionApp.DataAccess.GenericRepository
         public ITimesheetRepository Timesheet { get; private set; }
 
         public IContactUsRepository ContactUs { get; private set; }
-        public void Dispose()
+        public void Dispose() 
         {
             _context.Dispose();
         }
