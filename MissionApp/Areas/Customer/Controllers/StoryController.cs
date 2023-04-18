@@ -24,7 +24,11 @@ namespace MissionApp.Areas.Customer.Controllers
 //--------------------------------------------------------- Story Listing Page View ---------------------------------------------------------//
         public IActionResult StoryListingPage()
         {
-            return View();
+            StoryListingVM model = new()
+            {
+                UserInfo = GetThisUser()
+            };
+            return View(model);
         }
 //-------------------------------------------------------- Story Card Listing View ----------------------------------------------------------//
 
@@ -34,7 +38,8 @@ namespace MissionApp.Areas.Customer.Controllers
                 Stories = _unitOfWork.Story.GetAll(),
                 MissionThemes = _unitOfWork.MissionTheme.GetAll(),
                 Users = _unitOfWork.User.GetAll(),
-                Missions = _unitOfWork.Mission.GetAll()
+                Missions = _unitOfWork.Mission.GetAll(),
+                UserInfo = GetThisUser()
             };
 
             List<Story> stories = (List<Story>)_unitOfWork.Story.GetAll();
@@ -87,6 +92,7 @@ namespace MissionApp.Areas.Customer.Controllers
                 storyAddVM.MissionApplications = draftMissionApplicationList;
                 storyAddVM.story = _unitOfWork.Story.GetFirstOrDefault(u => u.UserId == user.UserId && u.Status == "DRAFT");
                 storyAddVM.StoryMediums = _unitOfWork.StoryMedia.GetAccToFilter(u => u.StoryId == storyAddVM.story.StoryId);
+                storyAddVM.user = user;
             }
             catch
             {
@@ -107,100 +113,76 @@ namespace MissionApp.Areas.Customer.Controllers
 
             var AlreadyPostedStory = _unitOfWork.Story.GetFirstOrDefault(u=> u.MissionId == missionId && u.UserId == userId && u.Status == "DRAFT");
             storyAddVM.Result = "false";
-
-            if(AlreadyPostedStory == null)
-            {
-                Story story = new Story
+            //if (ModelState.IsValid == true)
+            //{
+                if (AlreadyPostedStory == null)
                 {
-                    Title = storyTitle,
-                    Description = storyDescription,
-                    MissionId = missionId,
-                    UserId = userId,
-                    Status = "DRAFT",
-                    PublishedAt = DateTime.Parse(storyDate)
-                };
-                _unitOfWork.Story.Add(story);
-                _unitOfWork.Save();
-            }
-
-            else if(AlreadyPostedStory != null)
-            {
-                AlreadyPostedStory.Title = storyTitle;
-                AlreadyPostedStory.Description = storyDescription;
-                AlreadyPostedStory.PublishedAt = DateTime.Parse(storyDate);
-
-                _unitOfWork.Save();
-            }
-
-            var thisStory = _unitOfWork.Story.GetFirstOrDefault(u=> u.UserId == user.UserId && u.MissionId == missionId);
-            var media = _unitOfWork.StoryMedia.GetAccToFilter(u => u.StoryId == thisStory.StoryId);
-
-            if (videoURL != null)
-            {
-                foreach(var videoUrl in media)
-                {
-                    if (videoUrl.Type == "VIDEO")
+                    Story story = new Story
                     {
-                        if (videoUrl != null)
-                        {
-                            _unitOfWork.StoryMedia.Remove(videoUrl);
-                        }
-                    }
+                        Title = storyTitle,
+                        Description = storyDescription,
+                        MissionId = missionId,
+                        UserId = userId,
+                        Status = "DRAFT",
+                        PublishedAt = DateTime.Parse(storyDate)
+                    };
+                    _unitOfWork.Story.Add(story);
+                    _unitOfWork.Save();
                 }
-                StoryMedium storyMedia = new()
+
+                else if (AlreadyPostedStory != null)
                 {
-                    StoryId = thisStory.StoryId,
-                    Type = "VIDEO",
-                    Path = videoURL
-                };
-                _unitOfWork.StoryMedia.Add(storyMedia);
-                _unitOfWork.Save();
-            }
-            else
-            {
-                foreach (var videoUrl in media)
-                {
-                    if(videoUrl.Type == "VIDEO")
-                    {
-                        if(videoUrl != null)
-                        {
-                            _unitOfWork.StoryMedia.Remove(videoUrl);
-                        }
-                    }
+                    AlreadyPostedStory.Title = storyTitle;
+                    AlreadyPostedStory.Description = storyDescription;
+                    AlreadyPostedStory.PublishedAt = DateTime.Parse(storyDate);
+
+                    _unitOfWork.Save();
                 }
-                _unitOfWork.Save();
-            }
 
-            foreach(var img in media)
-            {
-                if (img.Type != "VIDEO")
+                var thisStory = _unitOfWork.Story.GetFirstOrDefault(u => u.UserId == user.UserId && u.MissionId == missionId);
+                var media = _unitOfWork.StoryMedia.GetAccToFilter(u => u.StoryId == thisStory.StoryId);
+
+                if (videoURL != null)
                 {
-                    if (preloaded.Length < 1)
+                    foreach (var videoUrl in media)
                     {
-                        string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/StoryImages/", img.Path);
-
-                        if (System.IO.File.Exists(imagePath))
+                        if (videoUrl.Type == "VIDEO")
                         {
-                            System.IO.File.Delete(imagePath);
-                        }
-
-                        _unitOfWork.StoryMedia.Remove(img);
-                        _unitOfWork.Save();
-                    }
-                    else
-                    {
-                        bool flag = false;
-
-                        for (int i = 0; i < preloaded.Length; i++)
-                        {
-                            var imgName = preloaded[i].Substring(13);
-
-                            if (imgName.Equals(img.Path))
+                            if (videoUrl != null)
                             {
-                                flag = true;
+                                _unitOfWork.StoryMedia.Remove(videoUrl);
                             }
                         }
-                        if (!flag)
+                    }
+                    StoryMedium storyMedia = new()
+                    {
+                        StoryId = thisStory.StoryId,
+                        Type = "VIDEO",
+                        Path = videoURL
+                    };
+                    _unitOfWork.StoryMedia.Add(storyMedia);
+                    _unitOfWork.Save();
+                }
+                else
+                {
+                    foreach (var videoUrl in media)
+                    {
+                        if (videoUrl.Type == "VIDEO")
+                        {
+                            if (videoUrl != null)
+                            {
+                                _unitOfWork.StoryMedia.Remove(videoUrl);
+                            }
+                        }
+                    }
+                    _unitOfWork.Save();
+                }
+
+                foreach (var img in media)
+                {
+                    if (img.Type != "VIDEO")
+                    {
+                        if (preloaded.Length < 1)
                         {
                             string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/StoryImages/", img.Path);
 
@@ -212,56 +194,83 @@ namespace MissionApp.Areas.Customer.Controllers
                             _unitOfWork.StoryMedia.Remove(img);
                             _unitOfWork.Save();
                         }
+                        else
+                        {
+                            bool flag = false;
 
+                            for (int i = 0; i < preloaded.Length; i++)
+                            {
+                                var imgName = preloaded[i].Substring(13);
+
+                                if (imgName.Equals(img.Path))
+                                {
+                                    flag = true;
+                                }
+                            }
+                            if (!flag)
+                            {
+                                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/StoryImages/", img.Path);
+
+                                if (System.IO.File.Exists(imagePath))
+                                {
+                                    System.IO.File.Delete(imagePath);
+                                }
+
+                                _unitOfWork.StoryMedia.Remove(img);
+                                _unitOfWork.Save();
+                            }
+
+                        }
                     }
                 }
-            }
 
-            var data = _unitOfWork.Story.GetFirstOrDefault(m => m.UserId == user.UserId && m.MissionId == missionId);
-            foreach (IFormFile img in files)
-            {
-                string imgExt = Path.GetExtension(img.FileName);
-                if (imgExt == ".jpg" || imgExt == ".png" || imgExt == ".jpeg")
+                var data = _unitOfWork.Story.GetFirstOrDefault(m => m.UserId == user.UserId && m.MissionId == missionId);
+                foreach (IFormFile img in files)
                 {
-                    string ImageName = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
-                    var imgSaveTo = Path.Combine(_webHostEnvironment.WebRootPath, "StoryImages", ImageName);
-                    /*var stream = new FileStream(imgSaveTo, FileMode.Create);
-                    img.CopyTo(stream);*/
-                    using (FileStream stream = new(imgSaveTo, FileMode.Create))
+                    string imgExt = Path.GetExtension(img.FileName);
+                    if (imgExt == ".jpg" || imgExt == ".png" || imgExt == ".jpeg")
                     {
-                        img.CopyTo(stream);
+                        string ImageName = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
+                        var imgSaveTo = Path.Combine(_webHostEnvironment.WebRootPath, "StoryImages", ImageName);
+                        /*var stream = new FileStream(imgSaveTo, FileMode.Create);
+                        img.CopyTo(stream);*/
+                        using (FileStream stream = new(imgSaveTo, FileMode.Create))
+                        {
+                            img.CopyTo(stream);
+                        }
+
+                        StoryMedium storyMedium = new();
+                        storyMedium.StoryId = data.StoryId;
+                        storyMedium.Type = imgExt;
+                        storyMedium.Path = ImageName;
+
+                        _unitOfWork.StoryMedia.Add(storyMedium);
+                        _unitOfWork.Save();
                     }
-
-                    StoryMedium storyMedium = new();
-                    storyMedium.StoryId = data.StoryId;
-                    storyMedium.Type = imgExt;
-                    storyMedium.Path = ImageName;
-
-                    _unitOfWork.StoryMedia.Add(storyMedium);
-                    _unitOfWork.Save();
                 }
-            }
 
-            StoryAddVM model = new();
+                StoryAddVM model = new();
 
-            List<MissionApplication> draftMissionApplicationList = new();
-            List<MissionApplication> approvedMissionApplicationList = _unitOfWork.MissionApplication.GetAccToFilter(u => u.UserId == user.UserId && u.ApprovalStatus == "APPROVE");
+                List<MissionApplication> draftMissionApplicationList = new();
+                List<MissionApplication> approvedMissionApplicationList = _unitOfWork.MissionApplication.GetAccToFilter(u => u.UserId == user.UserId && u.ApprovalStatus == "APPROVE");
 
-            foreach (var mission in approvedMissionApplicationList)
-            {
-                var story = _unitOfWork.Story.GetFirstOrDefault(u => u.UserId == user.UserId && u.MissionId == mission.MissionId);
-                if (story != null && (story.Status == "DRAFT" || story.Status == "DECLINED"))
+                foreach (var mission in approvedMissionApplicationList)
                 {
-                    draftMissionApplicationList.Add(mission);
+                    var story = _unitOfWork.Story.GetFirstOrDefault(u => u.UserId == user.UserId && u.MissionId == mission.MissionId);
+                    if (story != null && (story.Status == "DRAFT" || story.Status == "DECLINED"))
+                    {
+                        draftMissionApplicationList.Add(mission);
+                    }
+                    else if (story == null)
+                    {
+                        draftMissionApplicationList.Add(mission);
+                    }
                 }
-                else if (story == null)
-                {
-                    draftMissionApplicationList.Add(mission);
-                }
-            }
 
-            model.MissionApplications = draftMissionApplicationList;
-            model.Missions = (List<Mission>)_unitOfWork.Mission.GetAll();
+                model.MissionApplications = draftMissionApplicationList;
+                model.Missions = (List<Mission>)_unitOfWork.Mission.GetAll();
+            
+            
 
             return View("StoryAddPage", model);
         }
@@ -361,7 +370,7 @@ namespace MissionApp.Areas.Customer.Controllers
 
                     var smtpClient = new SmtpClient("smtp.gmail.com", 587)
                     {
-                        Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "jpyutohvpsvbmhsf"),
+                        Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "yspdfshljutiorby"),
                         EnableSsl = true,
                     };
                     smtpClient.Send(msg);

@@ -7,12 +7,16 @@
 <script src="https://cdn.tiny.cloud/1/0mn2ca8tgfn5bxyawsjjcicq1kfw76lzb3o0nsf39x182l9i/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="/js/storyAddingPage.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 <script>
     $(document).ready(function () {
         $('.input-images').imageUploader({});
     })
 </script>
+
+<div>This is madness</div>
 
 <div class="container px-4 px-sm-2 mb-5" style="max-width:87%">
     @*heading*@
@@ -33,7 +37,7 @@
             </div>
             <div class="col-12 col-md-4 form-group">
                 <label class="mb-1" for="exampleInputEmail1">My Story Title</label>
-                <input type="text" id="story_title" name="storyTitle" class="form-control" placeholder="Enter Story Title">
+                <input asp-for="story.Title" type="text" id="story_title" name="storyTitle" class="form-control" placeholder="Enter Story Title">
             </div>
             <div class="col-12 col-md-4 form-group">
                 <label class="mb-1" for="story_date">Date</label>
@@ -41,7 +45,7 @@
             </div>
             <div class="col-12 my-4 form-group" id="textarea">
                 <label class="mb-1" for="myStory">My Story</label>
-                <textarea class="w-100" name="storyDescription" style="min-height: 300px" id="myStory" placeholder="Sample Story Details..."></textarea>
+                <textarea asp-for="story.Description" class="w-100" name="storyDescription" style="min-height: 300px" id="myStory" placeholder="Sample Story Details..."></textarea>
             </div>
             <div class="col-12">
                 <label class="mb-1" for="exampleInputEmail1">Enter Video URL</label>

@@ -3,11 +3,16 @@ using MissionApp.DataAccess.GenericRepository;
 using MissionApp.DataAccess.GenericRepository.Interface;
 using MissionApp.DataAccess.MethodRepository;
 using MissionApp.DataAccess.MethodRepository.Interface;
+using Microsoft.Extensions.DependencyInjection;
 using MissionApp.Entities.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//builder.Services.AddControllersWithViews()
+//    .AddNewtonsoftJson(options =>
+//    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+//);
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IStoryMethodRepository, StoryMethodRepository>();

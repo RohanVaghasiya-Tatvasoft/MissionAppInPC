@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "mb3xNyZ3wrKnBpkhahlfkSPNxY48i0wDBUOKycfJR44=",
+  "Hash": "dU2n47z1wkYWoZ7ZGb0Wo/a5M+EI48UE8KvmxrpE0zI=",
   "Source": "MissionApp",
   "BasePath": "_content/MissionApp",
   "Mode": "Default",
@@ -2363,6 +2363,23 @@
       "OriginalItemSpec": "wwwroot\\js\\storyListingPage.js"
     },
     {
+      "Identity": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\js\\timesheet.js",
+      "SourceId": "MissionApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\",
+      "BasePath": "_content/MissionApp",
+      "RelativePath": "js/timesheet.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\timesheet.js"
+    },
+    {
       "Identity": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\js\\userProfile.js",
       "SourceId": "MissionApp",
       "SourceType": "Discovered",
@@ -3400,6 +3417,23 @@
       "OriginalItemSpec": "wwwroot\\StoryImages\\05975929-ee99-4a51-af5c-d7b54e59f3b0.jpg"
     },
     {
+      "Identity": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\StoryImages\\09c910d7-f140-4524-b820-dbdcc8fa2c37.jpg",
+      "SourceId": "MissionApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\",
+      "BasePath": "_content/MissionApp",
+      "RelativePath": "StoryImages/09c910d7-f140-4524-b820-dbdcc8fa2c37.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\StoryImages\\09c910d7-f140-4524-b820-dbdcc8fa2c37.jpg"
+    },
+    {
       "Identity": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\StoryImages\\1b8e7d33-5c1f-4f2f-946f-1e6d95484726.jpg",
       "SourceId": "MissionApp",
       "SourceType": "Discovered",
@@ -3415,6 +3449,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\StoryImages\\1b8e7d33-5c1f-4f2f-946f-1e6d95484726.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\StoryImages\\2aa0df48-4c38-4899-915d-06365e4dabe8.jpg",
+      "SourceId": "MissionApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\",
+      "BasePath": "_content/MissionApp",
+      "RelativePath": "StoryImages/2aa0df48-4c38-4899-915d-06365e4dabe8.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\StoryImages\\2aa0df48-4c38-4899-915d-06365e4dabe8.jpg"
     },
     {
       "Identity": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\StoryImages\\30b3b40b-edcb-4ada-89dc-bfed44a32c08.jpg",
@@ -3704,6 +3755,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\StoryImages\\dca0e9e0-3b53-468f-900d-b2eb0b8a20b8.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\StoryImages\\df776f88-f732-4558-bc33-bba40ea644f6.jpg",
+      "SourceId": "MissionApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\",
+      "BasePath": "_content/MissionApp",
+      "RelativePath": "StoryImages/df776f88-f732-4558-bc33-bba40ea644f6.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\StoryImages\\df776f88-f732-4558-bc33-bba40ea644f6.jpg"
     },
     {
       "Identity": "C:\\Users\\pca32\\source\\repos\\MissionAppInPC-main\\MissionApp\\wwwroot\\StoryImages\\e5d70042-dc07-437d-98c7-56f57cc3f333.jpg",

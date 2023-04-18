@@ -3,8 +3,8 @@
         url: "/Customer/User/ContactUs",
         method: "GET",
         success: function (data) {
-            document.getElementById("contactName").value = data.userDetails.firstName + " " + data.userDetails.lastName;
-            document.getElementById("contactEmail").value = data.userDetails.email;
+            document.getElementById("contactName").value = data.userInfo.firstName + " " + data.userInfo.lastName;
+            document.getElementById("contactEmail").value = data.userInfo.email;
         },
         error: function (error) {
             console.log(error);

@@ -18,5 +18,6 @@ namespace MissionApp.Entities.ViewModels
         public IEnumerable<MissionTheme> MissionThemes { get; set; }
 
         public IEnumerable<MissionApplication> MissionApplications { get; set; }
+        public User? UserInfo { get; set; }
     }
 }

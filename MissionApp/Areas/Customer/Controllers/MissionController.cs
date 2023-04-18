@@ -21,8 +21,10 @@ namespace MissionApp.Areas.Customer.Controllers
 
         public IActionResult PlatformLandingPage()
         {
+            User user = GetThisUser();
             UserVM userVM = new()
             {
+                UserInfo = user,
                 Countries = _unitOfWork.Country.GetAll(),
                 Cities = _unitOfWork.City.GetAll(),
                 Themes = _unitOfWork.MissionTheme.GetAll(),
@@ -307,14 +309,14 @@ namespace MissionApp.Areas.Customer.Controllers
             if (rate_update != null)
             {
                 rate_update.UpdatedAt = DateTime.Now;
-                rate_update.Rating = rating;
+                rate_update.Rating = rating; 
                 _unitOfWork.MissionRating.Update(rate_update);
-                _unitOfWork.Save();
+                _unitOfWork.Save(); 
 
             }
 
             //Add Rating for the first time user
-            if (rate_update == null)
+            if (rate_update == null) 
             {
                 var missionrating = new MissionRating
                 {
@@ -368,7 +370,7 @@ namespace MissionApp.Areas.Customer.Controllers
                     var smtpClient = new SmtpClient("smtp.gmail.com", 587)
                     {
                         UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "jpyutohvpsvbmhsf"),
+                        Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "yspdfshljutiorby"),
                         EnableSsl = true
                     };
                     smtpClient.Send(message);

@@ -54,8 +54,9 @@ namespace MissionApp.Entities.ViewModels
         public string NewPassword { get; set; } = null!;
 
         [NotMapped]
-        [Compare("Password")]
+        [Compare("NewPassword")]
         [Required]
         public string? ConfirmPassword { get; set; }
+        public User? UserInfo { get; set; }
     }
 }

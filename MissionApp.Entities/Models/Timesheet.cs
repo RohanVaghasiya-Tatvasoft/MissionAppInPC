@@ -11,11 +11,11 @@ public partial class Timesheet
 
     public int MissionId { get; set; }
 
-    public int? Time { get; set; }
+    public TimeSpan? Time { get; set; }
 
     public int? Action { get; set; }
 
-    public DateTime? DateVolunteered { get; set; }
+    public DateTime DateVolunteered { get; set; }
 
     public string? Notes { get; set; }
 

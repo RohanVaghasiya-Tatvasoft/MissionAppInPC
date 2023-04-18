@@ -22,7 +22,11 @@ namespace MissionApp.Areas.Customer.Controllers
         #region Policy Page--->
         public IActionResult PolicyPage()
         {
-            return View();
+            UserProfileVM userProfile = new()
+            {
+                UserInfo = GetThisUser()
+            };
+            return View(userProfile);
         }
         #endregion
 
@@ -31,24 +35,96 @@ namespace MissionApp.Areas.Customer.Controllers
         public IActionResult Timesheet()
         {
             User user = GetThisUser();
-            TimesheetVM timesheetVM = new();
 
-            timesheetVM.Missions = (List<Mission>)_unitOfWork.Mission.GetAll();
-            timesheetVM.Cities = (List<City>)_unitOfWork.City.GetAll();
-            timesheetVM.Timesheets = (List<Timesheet>)_unitOfWork.Timesheet.GetAll();
+            IEnumerable<MissionApplication> draftMissAppListForTime = _unitOfWork.MissionApplication.GetAccToFilter(m => m.UserId == user.UserId && m.ApprovalStatus == "APPROVE" && m.Mission.MissionType == "TIME");
+            IEnumerable<MissionApplication> draftMissAppListForGoal = _unitOfWork.MissionApplication.GetAccToFilter(m => m.UserId == user.UserId && m.ApprovalStatus == "APPROVE" && m.Mission.MissionType == "GOAL");
+            IEnumerable<Timesheet> dataOfTimeBasedMission = _unitOfWork.Timesheet.GetTimeSheetData(timeData => timeData.Mission.MissionType == "Time" && timeData.DeletedAt == null);
+            IEnumerable<Timesheet> dataOfGoalBasedMission = _unitOfWork.Timesheet.GetTimeSheetData(goalData => goalData.Mission.MissionType == "Goal" && goalData.DeletedAt == null);
 
-            List<MissionApplication> draftMissAppListForTime = _unitOfWork.MissionApplication.GetAccToFilter(m => m.UserId == user.UserId && m.ApprovalStatus == "APPROVE" && m.Mission.MissionType == "TIME");
-            List<MissionApplication> draftMissAppListForGoal = _unitOfWork.MissionApplication.GetAccToFilter(m => m.UserId == user.UserId && m.ApprovalStatus == "APPROVE" && m.Mission.MissionType == "GOAL");
-            IEnumerable<Timesheet> timeBasedData = _unitOfWork.Timesheet.GetTimeSheetData(timeData => timeData.Mission.MissionType == "Time" && timeData.DeletedAt == null);
-            IEnumerable<Timesheet> goalBasedData = _unitOfWork.Timesheet.GetTimeSheetData(goalData => goalData.Mission.MissionType == "Goal" && goalData.DeletedAt == null);
-            try
+            TimesheetVM obj = new();
+            obj.UserInfo = user;
+            obj.MissionApplicationForTime = draftMissAppListForTime;
+            obj.MissionApplicationForGoal = draftMissAppListForGoal;
+            obj.TimesheetsForTime = dataOfTimeBasedMission;
+            obj.TimesheetsForGoal = dataOfGoalBasedMission;
+
+            obj.Missions = _unitOfWork.Mission.GetAll();
+            obj.Cities = _unitOfWork.City.GetAll();
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        public IActionResult ChangeInTimesheet(TimesheetVM obj)
+        {
+            User user = GetThisUser();
+            var hours = obj.Hours;
+            var minutes = obj.Minutes;
+            TimeSpan time = new(hours, minutes, 0);
+
+            if (obj.TimeSheetId == 0)
             {
-                timesheetVM.MissionApplicationForTime = draftMissAppListForTime;
-                timesheetVM.MissionApplicationForGoal = draftMissAppListForGoal;
+                Timesheet data = new()
+                {
+                    UserId = user.UserId,
+                    MissionId = obj.MissionId,
+                    Time = time,
+                    Action = obj.Action,
+                    DateVolunteered = obj.DateVolunteered,
+                    Notes = obj.Notes,
+                    Status = "SUBMIT_FOR_APPROVAL",
+                };
+                _unitOfWork.Timesheet.Add(data);
+                _unitOfWork.Save();
+                TempData["success"] = "Data added successfully!";
+                return RedirectToAction("Timesheet");
             }
-            catch { }
+            else
+            {
+                Timesheet updatedData = _unitOfWork.Timesheet.GetFirstOrDefault(timeSheetData => timeSheetData.TimesheetId == obj.TimeSheetId);
+                if (updatedData != null)
+                {
+                    updatedData.MissionId = obj.MissionId;
+                    updatedData.Action = obj.Action;
+                    updatedData.Time = time;
+                    updatedData.Notes = obj.Notes;
+                    updatedData.DateVolunteered = obj.DateVolunteered;
+                    updatedData.UpdatedAt = DateTime.Now;
 
-            return View(timesheetVM);
+                    _unitOfWork.Timesheet.Update(updatedData);
+                    _unitOfWork.Save();
+
+                    TempData["success"] = "Data updated successfully!";
+                    return RedirectToAction("VolTimeSheet");
+                }
+            }
+
+            TempData["error"] = "Something went wrong!";
+            return RedirectToAction("Timesheet");
+        }
+
+
+        public IActionResult GetTimeSheetData(long timesheetId)
+        {
+            Timesheet timesheetData = _unitOfWork.Timesheet.GetFirstOrDefault(m => m.TimesheetId == timesheetId);
+            return Json(timesheetData);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteTimeSheetData(long timesheetId)
+        {
+            if (timesheetId > 0)
+            {
+                Timesheet deletingData = _unitOfWork.Timesheet.GetFirstOrDefault(m => m.TimesheetId == timesheetId);
+                deletingData.DeletedAt = DateTime.Now;
+                _unitOfWork.Timesheet.Update(deletingData);
+                _unitOfWork.Save();
+
+                return RedirectToAction("VolunteerTimesheet");
+            }
+
+            TempData["error"] = "Opps! something went wrong";
+            return RedirectToAction("VolunteerTimesheet");
         }
         #endregion
 
@@ -102,7 +178,8 @@ namespace MissionApp.Areas.Customer.Controllers
                 Countries = CountryList,
                 Cities = CitiesList,
                 SkillsList = SkillsList,
-                UserSkillList = userSkills
+                UserSkillList = userSkills,
+                UserInfo = user,
             };
 
             return View(userProfileVM);
@@ -183,65 +260,61 @@ namespace MissionApp.Areas.Customer.Controllers
         {
             User user = GetThisUser();
 
-            if (user.Avatar == null)
+            string imgExt = Path.GetExtension(avatar.FileName);
+            if (imgExt == ".jpg" || imgExt == ".png" || imgExt == ".jpeg")
             {
-                string imgExt = Path.GetExtension(avatar.Name);
-                if (imgExt == ".jpg" || imgExt == ".png" || imgExt == ".jpeg")
+                if (user.Avatar != null)
                 {
-                    string ImageName = user.UserId + Path.GetExtension(avatar.Name);
-                    var imgSaveTo = Path.Combine(_webHostEnvironment.WebRootPath, "StoryImages", ImageName);
-                    /*var stream = new FileStream(imgSaveTo, FileMode.Create);
-                    avatar.CopyTo(stream);*/
-                    using (FileStream stream = new(imgSaveTo, FileMode.Create))
+                    string ImageName = user.UserId + Path.GetFileName(avatar.FileName);
+                    var imgSaveTo = Path.Combine(_webHostEnvironment.WebRootPath, "/Avatars/", ImageName);
+                    string finalPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/" + imgSaveTo);
+
+                    if (!imgSaveTo.Equals(user.Avatar))
                     {
-                        avatar.CopyTo(stream);
+                        string alrExists = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/" + user.Avatar);
+                        if (System.IO.File.Exists(alrExists))
+                        {
+                            System.IO.File.Delete(alrExists);
+                        }
+
+                        using (FileStream stream = new(finalPath, FileMode.Create))
+                        {
+                            avatar.CopyTo(stream);
+                        }
+                        user.Avatar = imgSaveTo;
+                        user.UpdatedAt = DateTime.Now;
+                        _unitOfWork.User.Update(user);
                     }
-
-                    user.Avatar = ImageName;
-
-                    _unitOfWork.User.Add(user);
                 }
-            }
-            else
-            {
-                if (user.UserId + Path.GetExtension(avatar.Name) != user.Avatar)
+                else
                 {
-                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/StoryImages/", user.Avatar);
+                    string ImageName = user.UserId + Path.GetFileName(avatar.FileName);
+                    var imgSaveTo = Path.Combine(_webHostEnvironment.WebRootPath, "/Avatars/", ImageName);
+                    string finalPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/" + imgSaveTo);
 
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(imagePath);
-                    }
-
-                    string ImageName = user.UserId + Path.GetExtension(avatar.Name);
-                    var imgSaveTo = Path.Combine(_webHostEnvironment.WebRootPath, "StoryImages", ImageName);
-                    /*var stream = new FileStream(imgSaveTo, FileMode.Create);
-                    avatar.CopyTo(stream);*/
-                    using (FileStream stream = new(imgSaveTo, FileMode.Create))
+                    using (FileStream stream = new(finalPath, FileMode.Create))
                     {
                         avatar.CopyTo(stream);
                     }
-
-                    user.Avatar = ImageName;
-
+                    user.Avatar = imgSaveTo;
+                    user.UpdatedAt = DateTime.Now;
                     _unitOfWork.User.Update(user);
                 }
-
             }
             _unitOfWork.Save();
-            return View();
+            return RedirectToAction(nameof(UserProfile));
         }
 
         [HttpPost]
-        public IActionResult ChangePassword(string OldPassword, string NewPassword)
+        public IActionResult ChangePassword(UserProfileVM obj)
         {
             User user = GetThisUser();
 
-            if (user != null && OldPassword != null && NewPassword != null)
+            if (user != null && obj.OldPassword != null && obj.NewPassword != null)
             {
-                if (user.Password == OldPassword)
+                if (user.Password == obj.OldPassword)
                 {
-                    user.Password = NewPassword;
+                    user.Password = obj.NewPassword;
                     user.UpdatedAt = DateTime.Now;
                     _unitOfWork.User.Update(user);
                     _unitOfWork.Save();
@@ -252,6 +325,13 @@ namespace MissionApp.Areas.Customer.Controllers
             return Json(0);
         }
 
+        public JsonResult FilterCity(int countryId)
+        {
+            User user = GetThisUser();
+            var cityId = user.CityId;
+            IEnumerable<City> cityList = _unitOfWork.City.GetAccToFilter(m => m.CountryId == countryId);
+            return new JsonResult(new { CityId = cityId, Cities = cityList });
 
+        }
     }
 }

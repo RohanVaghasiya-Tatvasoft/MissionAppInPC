@@ -56,6 +56,7 @@ namespace MissionApp.Areas.Customer.Controllers
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Clear();
             return RedirectToAction("PlatformLandingPage", "Mission");
         }
 
@@ -152,7 +153,7 @@ namespace MissionApp.Areas.Customer.Controllers
                 var smtpclient = new SmtpClient("smtp.gmail.com", 587)
                 {
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "jpyutohvpsvbmhsf"),
+                    Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "yspdfshljutiorby"),
                     EnableSsl = true
                 };
                 smtpclient.Send(message);
