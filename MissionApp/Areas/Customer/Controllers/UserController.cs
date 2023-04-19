@@ -213,6 +213,7 @@ namespace MissionApp.Areas.Customer.Controllers
                 user.Title = userProfileVM.Title;
                 user.WhyIVolunteer = userProfileVM.WhyIVolunteer;
                 user.UpdatedAt = DateTime.Now;
+                
 
                 _unitOfWork.User.Update(user);
 
