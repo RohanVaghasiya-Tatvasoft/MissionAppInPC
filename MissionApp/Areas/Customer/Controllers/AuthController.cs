@@ -153,7 +153,7 @@ namespace MissionApp.Areas.Customer.Controllers
                 var smtpclient = new SmtpClient("smtp.gmail.com", 587)
                 {
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "yspdfshljutiorby"),
+                    Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "ggfusnzqobzmbgil"),
                     EnableSsl = true
                 };
                 smtpclient.Send(message);

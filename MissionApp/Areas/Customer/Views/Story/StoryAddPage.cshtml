@@ -4,15 +4,16 @@
     ViewData["Title"] = "Add Your Story";
     Layout = "~/Views/Shared/_MissionLayout.cshtml";
 }
-<script src="https://cdn.tiny.cloud/1/0mn2ca8tgfn5bxyawsjjcicq1kfw76lzb3o0nsf39x182l9i/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdn.tiny.cloud/1/0mn2ca8tgfn5bxyawsjjcicq1kfw76lzb3o0nsf39x182l9i/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="/js/storyAddingPage.js"></script>
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 <script>
     $(document).ready(function () {
-        $('.input-images').imageUploader({});
+        $('#input-images').imageUploader({});
     })
 </script>
 
@@ -58,7 +59,7 @@
                 <label for="uploadphoto">Upload your photos</label>
             </div>
             <div>
-                <lable class="input-images d-block"></lable>
+                <lable class="input-images d-block" id="input-images"></lable>
             </div>
         </div>
 

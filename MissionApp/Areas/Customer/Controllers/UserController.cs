@@ -126,6 +126,13 @@ namespace MissionApp.Areas.Customer.Controllers
             TempData["error"] = "Opps! something went wrong";
             return RedirectToAction("VolunteerTimesheet");
         }
+
+        [HttpGet]
+        public IActionResult getDate(int missionId)
+        {
+            var mission = _unitOfWork.Mission.GetAccToFilter(m => m.MissionId == missionId);
+            return Json(mission);
+        }
         #endregion
 
         //---------------------------------------------------------------- Contact Us ---------------------------------------------------------------//

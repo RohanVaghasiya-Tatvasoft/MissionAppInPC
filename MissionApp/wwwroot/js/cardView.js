@@ -28,9 +28,9 @@ function loadMissions(pg, sortVal) {
         theme.push($(ob).val());
     });
 
-    var skills = [];
+    var skill = [];
     $('#dropDownSkill').find("input:checked").each(function (i, ob) {
-        skills.push($(ob).val());
+        skill.push($(ob).val());
     });
 
     if (sortVal != null) {
@@ -45,7 +45,7 @@ function loadMissions(pg, sortVal) {
         url: "/Customer/Mission/MissionCardView",
         method: "POST",
         dataType: "html",
-        data: { 'sortBy': sortBy, 'missionToSearch': missionToSearch, 'pg': pg, 'country': country, 'cities': cities, 'theme': theme, 'skills': skills },
+        data: { 'sortBy': sortBy, 'missionToSearch': missionToSearch, 'pg': pg, 'country': country, 'cities': cities, 'theme': theme, 'skill': skill },
         success: function (data) {
             $("#divLoader").addClass("d-none");
             $('#mission-list').html("");

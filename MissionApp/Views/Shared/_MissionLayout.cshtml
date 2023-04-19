@@ -59,7 +59,7 @@
                         <li class="nav-item dropdown" style="z-index:3">
                             <a class="nav-link profile-link-part" href="#" id="navbarScrollingDropdown " role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="@Model.UserInfo.Avatar" class="rounded-circle" height="35" width="35" alt="Profile pic"
+                                <img src="/images/user1.png" class="rounded-circle" height="35" width="35" alt="Profile pic"
                                      loading="lazy" />
                                 <span style="margin-left:5px;">@firstName @lastName</span>
                                 <img src="~/images/drop-down.png" style="margin-left:5px" />
@@ -67,6 +67,7 @@
                             <ul class="dropdown-menu" style="z-index:1001" aria-labelledby="navbarScrollingDropdown">
                                 <li><a class="dropdown-item" asp-controller="User" asp-action="UserProfile">Edit Profile</a></li>
                                 <li><a class="dropdown-item" asp-controller="User" asp-action="Timesheet">Volunteering Timesheet</a></li>
+                                <li><a class="dropdown-item" asp-area="Admins" asp-controller="Admin" asp-action="AdminUserDetails">Admin</a></li>
                                 <li><a class="dropdown-item" asp-controller="Auth" asp-action="Logout">Signout</a></li>
                             </ul>
                         </li>

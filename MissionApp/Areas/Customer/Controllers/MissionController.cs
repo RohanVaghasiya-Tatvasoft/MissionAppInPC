@@ -52,7 +52,7 @@ namespace MissionApp.Areas.Customer.Controllers
 
             List<Mission> missions = _unitOfWork.Mission.GetAll().ToList();
 
-            if (country.Count() > 0 || cities.Count() > 0 || theme.Count() > 0)
+            if (country.Count() > 0 || cities.Count() > 0 || theme.Count() > 0 || skill.Count() > 0)
             {
                 missions = FilterMission(missions, country, cities, theme, skill);
             }
@@ -370,7 +370,7 @@ namespace MissionApp.Areas.Customer.Controllers
                     var smtpClient = new SmtpClient("smtp.gmail.com", 587)
                     {
                         UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "yspdfshljutiorby"),
+                        Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "ggfusnzqobzmbgil"),
                         EnableSsl = true
                     };
                     smtpClient.Send(message);

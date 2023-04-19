@@ -19,5 +19,6 @@ namespace MissionApp.Entities.ViewModels
         public IEnumerable<User> UserList { get; set; }
 
         public IEnumerable<StoryMedium> StoryMedia { get; set; }
+        public User UserInfo { get; set; }
     }
 }

@@ -67,16 +67,16 @@ namespace MissionApp.Areas.Customer.Controllers
 //------------------------------------------------------------------- Story Add View Page ------------------------------------------------------//
         public IActionResult StoryAddPage()
         {
-            User user = GetThisUser();
+            User UserInfo = GetThisUser();
             StoryAddVM storyAddVM = new();
             storyAddVM.Missions = (List<Mission>)_unitOfWork.Mission.GetAll();
 
             List<MissionApplication> draftMissionApplicationList = new();
-            List<MissionApplication> approvedMissionApplicationList = _unitOfWork.MissionApplication.GetAccToFilter(u =>u.UserId == user.UserId && u.ApprovalStatus == "APPROVE");
+            List<MissionApplication> approvedMissionApplicationList = _unitOfWork.MissionApplication.GetAccToFilter(u =>u.UserId == UserInfo.UserId && u.ApprovalStatus == "APPROVE");
 
             foreach(var mission in approvedMissionApplicationList)
             {
-                var story = _unitOfWork.Story.GetFirstOrDefault(u=> u.UserId == user.UserId && u.MissionId == mission.MissionId);
+                var story = _unitOfWork.Story.GetFirstOrDefault(u=> u.UserId == UserInfo.UserId && u.MissionId == mission.MissionId);
                 if(story != null && (story.Status == "DRAFT" || story.Status == "DECLINED"))
                 {
                     draftMissionApplicationList.Add(mission);
@@ -90,9 +90,9 @@ namespace MissionApp.Areas.Customer.Controllers
             try
             {
                 storyAddVM.MissionApplications = draftMissionApplicationList;
-                storyAddVM.story = _unitOfWork.Story.GetFirstOrDefault(u => u.UserId == user.UserId && u.Status == "DRAFT");
+                storyAddVM.story = _unitOfWork.Story.GetFirstOrDefault(u => u.UserId == UserInfo.UserId && u.Status == "DRAFT");
                 storyAddVM.StoryMediums = _unitOfWork.StoryMedia.GetAccToFilter(u => u.StoryId == storyAddVM.story.StoryId);
-                storyAddVM.user = user;
+                storyAddVM.user = UserInfo;
             }
             catch
             {
@@ -106,8 +106,8 @@ namespace MissionApp.Areas.Customer.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult StoryAddPage(int missionId, string storyTitle, string storyDate, string storyDescription, string videoURL, List<IFormFile> files, string[] preloaded)
         {
-            var user = GetThisUser();
-            var userId = user.UserId;
+            var UserInfo = GetThisUser();
+            var userId = UserInfo.UserId;
 
             StoryAddVM storyAddVM = new();
 
@@ -139,7 +139,7 @@ namespace MissionApp.Areas.Customer.Controllers
                     _unitOfWork.Save();
                 }
 
-                var thisStory = _unitOfWork.Story.GetFirstOrDefault(u => u.UserId == user.UserId && u.MissionId == missionId);
+                var thisStory = _unitOfWork.Story.GetFirstOrDefault(u => u.UserId == UserInfo.UserId && u.MissionId == missionId);
                 var media = _unitOfWork.StoryMedia.GetAccToFilter(u => u.StoryId == thisStory.StoryId);
 
                 if (videoURL != null)
@@ -224,7 +224,7 @@ namespace MissionApp.Areas.Customer.Controllers
                     }
                 }
 
-                var data = _unitOfWork.Story.GetFirstOrDefault(m => m.UserId == user.UserId && m.MissionId == missionId);
+                var data = _unitOfWork.Story.GetFirstOrDefault(m => m.UserId == UserInfo.UserId && m.MissionId == missionId);
                 foreach (IFormFile img in files)
                 {
                     string imgExt = Path.GetExtension(img.FileName);
@@ -252,11 +252,11 @@ namespace MissionApp.Areas.Customer.Controllers
                 StoryAddVM model = new();
 
                 List<MissionApplication> draftMissionApplicationList = new();
-                List<MissionApplication> approvedMissionApplicationList = _unitOfWork.MissionApplication.GetAccToFilter(u => u.UserId == user.UserId && u.ApprovalStatus == "APPROVE");
+                List<MissionApplication> approvedMissionApplicationList = _unitOfWork.MissionApplication.GetAccToFilter(u => u.UserId == UserInfo.UserId && u.ApprovalStatus == "APPROVE");
 
                 foreach (var mission in approvedMissionApplicationList)
                 {
-                    var story = _unitOfWork.Story.GetFirstOrDefault(u => u.UserId == user.UserId && u.MissionId == mission.MissionId);
+                    var story = _unitOfWork.Story.GetFirstOrDefault(u => u.UserId == UserInfo.UserId && u.MissionId == mission.MissionId);
                     if (story != null && (story.Status == "DRAFT" || story.Status == "DECLINED"))
                     {
                         draftMissionApplicationList.Add(mission);
@@ -278,8 +278,8 @@ namespace MissionApp.Areas.Customer.Controllers
         [HttpPost]
         public IActionResult GetMissionDetails(int missionId)
         {
-            User user = GetThisUser();
-            var query = _storyMethodRepo.GetStory(missionId, user.UserId);
+            User UserInfo = GetThisUser();
+            var query = _storyMethodRepo.GetStory(missionId, UserInfo.UserId);
 
             return Json(query);
         }
@@ -288,8 +288,8 @@ namespace MissionApp.Areas.Customer.Controllers
         [HttpPost]
         public IActionResult SubmitStory(int missionId)
         {
-            User user = GetThisUser();
-            Story storyOfUser = _unitOfWork.Story.GetFirstOrDefault(m => m.MissionId == missionId && m.UserId == user.UserId && m.Status == "DRAFT");
+            User UserInfo = GetThisUser();
+            Story storyOfUser = _unitOfWork.Story.GetFirstOrDefault(m => m.MissionId == missionId && m.UserId == UserInfo.UserId && m.Status == "DRAFT");
             if (storyOfUser != null)
             {
                 storyOfUser.Status = "PENDING";
@@ -322,13 +322,13 @@ namespace MissionApp.Areas.Customer.Controllers
             }
 
 
-            User user = GetThisUser();
+            User UserInfo = GetThisUser();
             List<User> ListOfUsers = (List<User>)_unitOfWork.User.GetAll();
             User? FindingStoryCreator = _storyMethodRepo.UserOfStory(storyId);
 
             VolunteerStoryDetailsVM storyDetails = new()
             {
-                User = user,
+                User = UserInfo,
                 UserList = ListOfUsers,
                 UserOfStory = FindingStoryCreator,
                 StoryDetails = _unitOfWork.Story.GetFirstOrDefault(m => m.StoryId == storyId),
@@ -370,7 +370,7 @@ namespace MissionApp.Areas.Customer.Controllers
 
                     var smtpClient = new SmtpClient("smtp.gmail.com", 587)
                     {
-                        Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "yspdfshljutiorby"),
+                        Credentials = new NetworkCredential("job.rohanvaghasiya@gmail.com", "ggfusnzqobzmbgil"),
                         EnableSsl = true,
                     };
                     smtpClient.Send(msg);

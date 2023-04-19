@@ -27,8 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admins\Controllers\" />
-    <Folder Include="Areas\Admins\Views\" />
     <Folder Include="wwwroot\Avatars\" />
     <Folder Include="wwwroot\StoryImages\" />
   </ItemGroup>
